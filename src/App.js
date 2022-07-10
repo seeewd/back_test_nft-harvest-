@@ -38,18 +38,18 @@ function App() {
       .then((receipt) => {
         setfeedback('Success')
         setclaimingNft(false)
-      })
-    const getTotalMinted = async () => {
-      const totalMinted = await blockchain.smartContract.methods
-        .totalSupply()
-        .call()
-      return totalMinted
-    }
-    const init = async () => {
-      setTotalMinted(await getTotalMinted())
-    }
+        const getTotalMinted = async () => {
+          const totalMinted = await blockchain.smartContract.methods
+            .totalSupply()
+            .call()
+          return totalMinted
+        }
+        const init = async () => {
+          setTotalMinted(await getTotalMinted())
+        }
 
-    init()
+        init()
+      })
   }
 
   useEffect(() => {

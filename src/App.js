@@ -26,7 +26,7 @@ function App() {
       .send({
         from: blockchain.account,
         value: blockchain.web3.utils.toWei(
-          (0.02 * _amount).toString(),
+          (0.0005 * _amount).toString(),
           'ether',
         ),
       })

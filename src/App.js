@@ -17,39 +17,27 @@ function App() {
   const blockchain = useSelector((state) => state.blockchain)
   const data = useSelector((state) => state.data)
   const [feedback, setfeedback] = useState('Maybe it is your lucky day.')
-  const [claimingNft, setclaimingNft] = useState(false)
+  const [harvestingNft, setHarvestingNft] = useState(false)
 
-  const claimNFTs = (_amount) => {
-    setclaimingNft(true)
+  const harvest = () => {
+    setHarvestingNft(true)
     blockchain.smartContract.methods
-      .mint(blockchain.account, _amount)
+      .withdraw()
       .send({
         from: blockchain.account,
-        value: blockchain.web3.utils.toWei(
-          (0.0005 * _amount).toString(),
-          'ether',
-        ),
       })
       .once('error', (err) => {
         console.log(err)
-        setfeedback('Error')
-        setclaimingNft(false)
+        setfeedback('Error occured')
+        setHarvestingNft(false)
       })
       .then((receipt) => {
-        setfeedback('Success')
-        setclaimingNft(false)
-        const getTotalMinted = async () => {
-          const totalMinted = await blockchain.smartContract.methods
-            .totalSupply()
-            .call()
-          return totalMinted
-        }
-        const init = async () => {
-          setTotalMinted(await getTotalMinted())
-        }
+        console.log('success')
+        setfeedback('Withdraw successed')
 
-        init()
+        setHarvestingNft(false)
       })
+    //setHarvestingNft(false)
   }
 
   useEffect(() => {
@@ -108,24 +96,15 @@ function App() {
           </s.TextTitle>
           <s.SpacerSmall />
           <StyledButton
-            disabled={claimingNft ? 1 : 0}
+            disabled={harvestingNft ? 1 : 0}
             onClick={(e) => {
               e.preventDefault()
-              claimNFTs(1)
+              harvest()
             }}
           >
-            {claimingNft ? 'Busy Claiming' : 'Claim 1 NFT'}
+            {harvestingNft ? 'Busy' : 'Harvest'}
           </StyledButton>
           <s.SpacerSmall />
-          <StyledButton
-            disabled={claimingNft ? 1 : 0}
-            onClick={(e) => {
-              e.preventDefault()
-              claimNFTs(3)
-            }}
-          >
-            {claimingNft ? 'Busy Claiming' : 'Claim 3 NFT'}
-          </StyledButton>
         </s.Container>
       )}
     </s.Screen>

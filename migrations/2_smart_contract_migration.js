@@ -5,6 +5,6 @@ module.exports = function (deployer) {
     SmartContract,
     'testt',
     'ttt',
-    'https://ikzttp.mypinata.cloud/ipfs/QmYDvPAXtiJg7s8JdRBSLWdgSphQdac8j1YuQNNxcGE1hg',
+    'https://s3.ap-northeast-2.amazonaws.com/ssulahome.com/images/',
   )
 }

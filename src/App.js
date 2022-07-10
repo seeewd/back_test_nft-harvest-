@@ -12,6 +12,7 @@ export const StyledButton = styled.button`
 `
 
 function App() {
+  const [totalMinted, setTotalMinted] = useState(0)
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
   const data = useSelector((state) => state.data)
@@ -38,11 +39,33 @@ function App() {
         setfeedback('Success')
         setclaimingNft(false)
       })
+    const getTotalMinted = async () => {
+      const totalMinted = await blockchain.smartContract.methods
+        .totalSupply()
+        .call()
+      return totalMinted
+    }
+    const init = async () => {
+      setTotalMinted(await getTotalMinted())
+    }
+
+    init()
   }
 
   useEffect(() => {
     if (blockchain.account !== '' && blockchain.smartContract !== null) {
       dispatch(fetchData(blockchain.account))
+      const getTotalMinted = async () => {
+        const totalMinted = await blockchain.smartContract.methods
+          .totalSupply()
+          .call()
+        return totalMinted
+      }
+      const init = async () => {
+        setTotalMinted(await getTotalMinted())
+      }
+
+      init()
     }
   }, [blockchain.smartContract, dispatch])
 
@@ -79,6 +102,10 @@ function App() {
           <s.TextDescription style={{ textAlign: 'center' }}>
             {feedback}
           </s.TextDescription>
+          <s.SpacerSmall />
+          <s.TextTitle style={{ textAlign: 'center' }}>
+            {totalMinted} / 20
+          </s.TextTitle>
           <s.SpacerSmall />
           <StyledButton
             disabled={claimingNft ? 1 : 0}
